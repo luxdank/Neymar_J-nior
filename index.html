@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neymar Jr | O Mago do Futebol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ---------- RESET & BASE ---------- */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --neon-green: #10cc19;
+      --electric-blue: #fafa00;
+      --gold: #2449ff;
+      --dark-bg: #0a0a0f;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --font-main: 'Montserrat', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--dark-bg);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Cursor personalizado (opcional) */
+    body.custom-cursor {
+      cursor: none;
+    }
+
+    .cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      background: var(--neon-green);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease;
+      mix-blend-mode: difference;
+    }
+
+    .cursor-outline {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--neon-green);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.2s, height 0.2s;
+      opacity: 0.5;
+    }
+
+    /* ---------- SCROLL REVEAL ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-80px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal-left.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(80px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal-right.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ---------- NAVBAR ---------- */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.2rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      transition: background 0.4s, backdrop-filter 0.4s;
+    }
+
+    .navbar.scrolled {
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, var(--neon-green), var(--electric-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--neon-green);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--neon-green);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ---------- HERO ---------- */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-video-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 10;
+      filter: brightness(0.6) saturate(1.2);
+    }
+
+    /* Fallback gradient caso o vídeo não carregue */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(0, 255, 135, 0.15), transparent 60%),
+                  linear-gradient(180deg, var(--dark-bg) 0%, transparent 40%, var(--dark-bg) 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      padding: 0 2rem;
+      will-change: transform;
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 10vw, 7rem);
+      font-weight: 900;
+      line-height: 1.05;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #ffffff 0%, var(--neon-green) 50%, var(--electric-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 60px rgba(0, 255, 135, 0.3);
+      animation: heroGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroGlow {
+      from { filter: drop-shadow(0 0 20px rgba(0, 255, 135, 0.4)); }
+      to { filter: drop-shadow(0 0 40px rgba(0, 194, 255, 0.6)); }
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--text-secondary);
+      margin-top: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      margin-top: 2.5rem;
+      padding: 1rem 3rem;
+      background: linear-gradient(135deg, var(--neon-green), var(--electric-blue));
+      color: var(--dark-bg);
+      font-weight: 800;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 0 30px rgba(0, 255, 135, 0.3);
+    }
+
+    .hero-cta:hover {
+      transform: scale(1.05) translateY(-3px);
+      box-shadow: 0 0 50px rgba(0, 255, 135, 0.6);
+    }
+
+    /* ---------- SEÇÕES GERAIS ---------- */
+    section {
+      padding: 6rem 5%;
+      position: relative;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #fff, var(--neon-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      font-weight: 300;
+      max-width: 600px;
+      margin-bottom: 4rem;
+    }
+
+    /* ---------- CARREIRA (TIMELINE) ---------- */
+    .timeline {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--neon-green), var(--electric-blue));
+      border-radius: 3px;
+    }
+
+    .timeline-item {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 50%;
+      position: relative;
+      margin-bottom: 4rem;
+    }
+
+    .timeline-item:nth-child(even) {
+      justify-content: flex-start;
+      padding-right: 0;
+      padding-left: 50%;
+    }
+
+    .timeline-content {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 80%;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .timeline-content:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 255, 135, 0.1);
+    }
+
+    .timeline-year {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--neon-green);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+
+    .timeline-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 300;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: var(--neon-green);
+      border-radius: 50%;
+      top: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 20px var(--neon-green);
+      z-index: 2;
+    }
+
+    /* ---------- CLUBES (CARDS) ---------- */
+    .clubs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .club-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  box-shadow 0.4s, border-color 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .club-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0, 255, 135, 0.1), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+
+    .club-card:hover::before {
+      opacity: 1;
+    }
+
+    .club-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 30px 60px rgba(0, 255, 135, 0.15);
+      border-color: var(--neon-green);
+    }
+
+    .club-badge {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2rem;
+      font-weight: 900;
+      border: 2px solid var(--glass-border);
+    }
+
+    .club-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .club-years {
+      color: var(--neon-green);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+    }
+
+    .club-stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .club-stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .club-stat-number {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--gold);
+    }
+
+    .club-stat-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ---------- GOLS (CONTADOR + VÍDEO) ---------- */
+    .goals-section {
+      background: linear-gradient(180deg, var(--dark-bg) 0%, rgba(0, 255, 135, 0.03) 50%, var(--dark-bg) 100%);
+    }
+
+    .goals-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .goals-counter {
+      text-align: center;
+    }
+
+    .goals-number {
+      font-size: clamp(5rem, 15vw, 10rem);
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--gold), #ff8c00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.3));
+    }
+
+    .goals-label {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-top: 0.5rem;
+    }
+
+    .goals-detail {
+      margin-top: 1.5rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    .video-container {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      transition: transform 0.4s;
+    }
+
+    .video-container:hover {
+      transform: scale(1.02);
+    }
+
+    .video-container iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: block;
+      border: none;
+    }
+
+    /* ---------- DRIBLES ---------- */
+    .dribbles-section {
+      background: linear-gradient(180deg, var(--dark-bg), rgba(0, 194, 255, 0.03), var(--dark-bg));
+    }
+
+    .dribbles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto 3rem;
+    }
+
+    .dribble-stat-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .dribble-stat-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--electric-blue);
+    }
+
+    .dribble-stat-number {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--electric-blue);
+      line-height: 1;
+    }
+
+    .dribble-stat-desc {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ---------- GALERIA ---------- */
+    .gallery-section {
+      padding-bottom: 8rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      aspect-ratio: 3 / 4;
+      cursor: pointer;
+      transition: transform 0.4s, box-shadow 0.4s;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.03);
+      box-shadow: 0 20px 50px rgba(0, 255, 135, 0.2);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(10,10,15,0.9) 0%, transparent 50%);
+      display: flex;
+      align-items: flex-end;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .gallery-overlay span {
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ---------- FOOTER ---------- */
+    .footer {
+      text-align: center;
+      padding: 3rem 5%;
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .footer a {
+      color: var(--neon-green);
+      text-decoration: none;
+    }
+
+    /* ---------- RESPONSIVIDADE ---------- */
+    @media (max-width: 900px) {
+      .goals-layout {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .timeline::before {
+        left: 20px;
+      }
+
+      .timeline-item,
+      .timeline-item:nth-child(even) {
+        justify-content: flex-start;
+        padding-left: 60px;
+        padding-right: 0;
+      }
+
+      .timeline-dot {
+        left: 20px;
+        transform: translateX(-50%);
+      }
+
+      .timeline-content {
+        width: 100%;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero-title {
+        font-size: 2.8rem;
+      }
+
+      .club-stats {
+        gap: 1rem;
+      }
+
+      .club-stat-number {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body class="custom-cursor">
+
+  <!-- CURSOR PERSONALIZADO -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-outline" id="cursorOutline"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="logo">NJR</div>
+    <ul class="nav-links">
+      <li><a href="#carreira">Carreira</a></li>
+      <li><a href="#clubes">Clubes</a></li>
+      <li><a href="#gols">Gols</a></li>
+      <li><a href="#dribles">Dribles</a></li>
+      <li><a href="#galeria">Galeria</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <!-- Vídeo de fundo (pode ser substituído por um vídeo MP4 de futebol) -->
+    <video class="hero-video-bg" autoplay muted loop playsinline poster="njr.mp4">
+      <source src="njr.mp4" type="video/mp4" />
+    </video>
+
+    <div class="hero-content" id="heroContent">
+      <h1 class="hero-title">Neymar Jr</h1>
+      <p class="hero-subtitle">O Mago do Futebol · 1992 — Presente</p>
+      <a href="#carreira" class="hero-cta">Explorar a Jornada</a>
+    </div>
+  </section>
+
+  <!-- CARREIRA -->
+  <section id="carreira">
+    <div class="reveal">
+      <h2 class="section-title">Carreira</h2>
+      <p class="section-subtitle">De promessa santista a ídolo mundial. Uma trajetória marcada por genialidade, títulos e momentos inesquecíveis.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item reveal-left">
+        <div class="timeline-content">
+          <div class="timeline-year">2009</div>
+          <h3 class="timeline-title">Estreia Profissional no Santos</h3>
+          <p class="timeline-desc">Aos 17 anos, Neymar faz sua estreia pelo time principal do Santos e rapidamente se torna a maior revelação do futebol brasileiro, encantando com dribles e gols.</p>
+        </div>
+        <div class="timeline-dot"></div>
+      </div>
+
+      <div class="timeline-item reveal-right">
+        <div class="timeline-content">
+          <div class="timeline-year">2013</div>
+          <h3 class="timeline-title">Transferência para o Barcelona</h3>
+          <p class="timeline-desc">Após brilhar no Santos e na Seleção, Neymar é anunciado pelo FC Barcelona, realizando o sonho de jogar ao lado de Messi e conquistando a Champions League em sua primeira temporada.</p>
+        </div>
+        <div class="timeline-dot"></div>
+      </div>
+
+      <div class="timeline-item reveal-left">
+        <div class="timeline-content">
+          <div class="timeline-year">2017</div>
+          <h3 class="timeline-title">Recorde Mundial no PSG</h3>
+          <p class="timeline-desc">O Paris Saint-Germain paga €222 milhões, a maior transferência da história do futebol. Neymar se torna o líder técnico do projeto parisiense e acumula títulos e recordes individuais.</p>
+        </div>
+        <div class="timeline-dot"></div>
+      </div>
+
+      <div class="timeline-item reveal-right">
+        <div class="timeline-content">
+          <div class="timeline-year">2023</div>
+          <h3 class="timeline-title">Aventura no Al-Hilal</h3>
+          <p class="timeline-desc">Neymar se transfere para o futebol saudita, no Al-Hilal, em um novo desafio internacional, levando seu futebol-arte para o Oriente Médio.</p>
+        </div>
+        <div class="timeline-dot"></div>
+      </div>
+
+      <div class="timeline-item reveal-left">
+        <div class="timeline-content">
+          <div class="timeline-year">2025</div>
+          <h3 class="timeline-title">Retorno ao Santos</h3>
+          <p class="timeline-desc">O filho pródigo volta para casa. Neymar retorna ao Santos FC, reacendendo a paixão da torcida e mostrando que a magia continua viva na Vila Belmiro.</p>
+        </div>
+        <div class="timeline-dot"></div>
+      </div>
+
+      <div class="timeline-item reveal-right">
+        <div class="timeline-content">
+          <div class="timeline-year">2026</div>
+          <h3 class="timeline-title">Copa do Mundo e Temporada no Santos</h3>
+          <p class="timeline-desc">Aos 34 anos, Neymar disputa sua quarta Copa do Mundo e segue sendo o principal nome do Santos, com 10 gols e 8 assistências em 26 jogos na temporada 2026.</p>
+        </div>
+        <div class="timeline-dot"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLUBES -->
+  <section id="clubes">
+    <div class="reveal">
+      <h2 class="section-title">Clubes</h2>
+      <p class="section-subtitle">Números e conquistas que eternizaram Neymar em cada camisa que vestiu.</p>
+    </div>
+
+    <div class="clubs-grid">
+      <!-- Santos -->
+      <div class="club-card reveal">
+        <div class="club-badge"><img src="santos.png" width="50px" height="50px"></div>
+        <h3 class="club-name">Santos FC</h3>
+        <p class="club-years">2009–2013 · 2025–presente</p>
+        <div class="club-stats">
+          <div class="club-stat">
+            <span class="club-stat-number">156</span>
+            <span class="club-stat-label">Gols</span>
+          </div>
+          <div class="club-stat">
+            <span class="club-stat-number">273</span>
+            <span class="club-stat-label">Jogos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barcelona -->
+      <div class="club-card reveal">
+        <div class="club-badge"><img src="barcelona.png" width="50px" height="50px"></div>
+        <h3 class="club-name">FC Barcelona</h3>
+        <p class="club-years">2013–2017</p>
+        <div class="club-stats">
+          <div class="club-stat">
+            <span class="club-stat-number">105</span>
+            <span class="club-stat-label">Gols</span>
+          </div>
+          <div class="club-stat">
+            <span class="club-stat-number">186</span>
+            <span class="club-stat-label">Jogos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PSG -->
+      <div class="club-card reveal">
+        <div class="club-badge"><img src="psg.png" width="50px" height="50px"></div>
+        <h3 class="club-name">Paris Saint-Germain</h3>
+        <p class="club-years">2017–2023</p>
+        <div class="club-stats">
+          <div class="club-stat">
+            <span class="club-stat-number">118</span>
+            <span class="club-stat-label">Gols</span>
+          </div>
+          <div class="club-stat">
+            <span class="club-stat-number">173</span>
+            <span class="club-stat-label">Jogos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Al-Hilal -->
+      <div class="club-card reveal">
+        <div class="club-badge"><img src="al.png" width="50px" height="50px"></div>
+        <h3 class="club-name">Al-Hilal</h3>
+        <p class="club-years">2023–2025</p>
+        <div class="club-stats">
+          <div class="club-stat">
+            <span class="club-stat-number">0</span>
+            <span class="club-stat-label">Gols</span>
+          </div>
+          <div class="club-stat">
+            <span class="club-stat-number">3</span>
+            <span class="club-stat-label">Jogos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GOLS -->
+  <section id="gols" class="goals-section">
+    <div class="reveal">
+      <h2 class="section-title">Gols</h2>
+      <p class="section-subtitle">O instante em que o estádio prende a respiração. Cada gol, uma obra de arte.</p>
+    </div>
+
+    <div class="goals-layout">
+      <div class="goals-counter reveal-left">
+        <div class="goals-number" id="goalsNumber">0</div>
+        <div class="goals-label">Gols na Carreira</div>
+        <p class="goals-detail">
+          Mais de 450 gols marcados por clubes e pela Seleção Brasileira.<br />
+          Em 2026, pelo Santos: <strong>10 gols e 8 assistências</strong> em 26 jogos.<br />
+          Um dos maiores artilheiros da história do futebol brasileiro.
+        </p>
+      </div>
+
+      <div class="video-container reveal-right">
+        <!-- Vídeo de melhores momentos (YouTube) -->
+       <video autoplay muted loop playsinline width="640" height="360">
+         <source src="gols.mp4" type="video/mp4">
+      </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- DRIBLES -->
+  <section id="dribles" class="dribbles-section">
+    <div class="reveal">
+      <h2 class="section-title">Dribles</h2>
+      <p class="section-subtitle">A arte de desconcertar. Neymar é sinônimo de habilidade pura, criatividade e ousadia.</p>
+    </div>
+
+    <div class="dribbles-grid">
+      <div class="dribble-stat-card reveal">
+        <div class="dribble-stat-number" data-count="335">0</div>
+        <p class="dribble-stat-desc">Dribles certos em 2017 (recorde em um ano civil)</p>
+      </div>
+      <div class="dribble-stat-card reveal">
+        <div class="dribble-stat-number" data-count="1448">0</div>
+        <p class="dribble-stat-desc">Dribles completados na carreira (até 2026)</p>
+      </div>
+      <div class="dribble-stat-card reveal">
+        <div class="dribble-stat-number" data-count="16">0</div>
+        <p class="dribble-stat-desc">Dribles em uma única partida de Champions League</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- GALERIA -->
+  <section id="galeria" class="gallery-section">
+    <div class="reveal">
+      <h2 class="section-title">Galeria</h2>
+      <p class="section-subtitle">Momentos eternizados do craque que encanta o mundo com seu futebol-arte.</p>
+    </div>
+
+    <div class="gallery-grid">
+      <!-- Imagens ilustrativas (substitua pelas URLs oficiais se desejar) -->
+      <div class="gallery-item reveal">
+        <img src="https://i.pinimg.com/originals/b3/0e/18/b30e18d710c8181131746e20c1ffe113.jpg?nii=t" alt="Neymar em ação" loading="lazy" />
+        <div class="gallery-overlay"><span>Magia em campo</span></div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="https://conteudo.imguol.com.br/c/esporte/eb/2022/09/27/neymar-comemora-gol-marcado-pela-selecao-brasileira-contra-a-tunisia-1664308063053_v2_450x600.jpg" alt="Neymar comemorando" loading="lazy" />
+        <div class="gallery-overlay"><span>Comemoração</span></div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6yHFDNh9s8A82tKlWYw942twRpvlymuRCrimLvQLl9PaHbCAJjy5YfWI&s=10" />
+        <div class="gallery-overlay"><span>Drible desconcertante</span></div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="https://midias.correiobraziliense.com.br/_midias/jpg/2026/08/01/1200x801/1_neymar-em-santos-x-remo-br26-610x400-67308803.jpg" loading="lazy" />
+        <div class="gallery-overlay"><span>Conexão com a torcida</span></div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="https://i.pinimg.com/736x/af/72/d4/af72d4b6b7b4e4dcd26e706bca46b33d.jpg" alt="Neymar com a taça" loading="lazy" />
+        <div class="gallery-overlay"><span>Gloria</span></div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVV4AhQehYhmHuU5BqbSa51TwWaOAkAPlBH4rTbN-g-egEQz1HrVxuSkI&s=10" alt="Neymar em treino" loading="lazy" />
+        <div class="gallery-overlay"><span>Foco e determinação</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>Landing page criada para fãs de Neymar Jr. · Dados atualizados até 2026.</p>
+    <p>Imagens e vídeos meramente ilustrativos. Siga o canal oficial: <a href="https://www.youtube.com/neymarjr" target="_blank" rel="noopener">youtube.com/neymarjr</a></p>
+  </footer>
+
+  <script>
+    // ---------- CURSOR PERSONALIZADO ----------
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorOutline = document.getElementById('cursorOutline');
+
+    if (window.matchMedia('(pointer: fine)').matches) {
+      document.addEventListener('mousemove', (e) => {
+        const posX = e.clientX;
+        const posY = e.clientY;
+
+        cursorDot.style.left = `${posX}px`;
+        cursorDot.style.top = `${posY}px`;
+
+        // Efeito de atraso no outline
+        cursorOutline.animate(
+          { left: `${posX}px`, top: `${posY}px` },
+          { duration: 300, fill: 'forwards' }
+        );
+      });
+
+      // Efeito de hover em elementos interativos
+      const interactiveElements = document.querySelectorAll('a, button, .club-card, .gallery-item, .timeline-content, .dribble-stat-card');
+      interactiveElements.forEach((el) => {
+        el.addEventListener('mouseenter', () => {
+          cursorOutline.style.width = '60px';
+          cursorOutline.style.height = '60px';
+          cursorOutline.style.borderColor = 'var(--electric-blue)';
+        });
+        el.addEventListener('mouseleave', () => {
+          cursorOutline.style.width = '40px';
+          cursorOutline.style.height = '40px';
+          cursorOutline.style.borderColor = 'var(--neon-green)';
+        });
+      });
+    } else {
+      // Em dispositivos touch, esconde o cursor personalizado
+      cursorDot.style.display = 'none';
+      cursorOutline.style.display = 'none';
+      document.body.classList.remove('custom-cursor');
+    }
+
+    // ---------- NAVBAR SCROLL EFFECT ----------
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // ---------- SCROLL REVEAL (Intersection Observer) ----------
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px',
+      }
+    );
+
+    revealElements.forEach((el) => revealObserver.observe(el));
+
+    // ---------- PARALLAX NO HERO (EFEITO DE MOUSE) ----------
+    const heroContent = document.getElementById('heroContent');
+    const heroSection = document.getElementById('hero');
+
+    if (window.matchMedia('(pointer: fine)').matches) {
+      heroSection.addEventListener('mousemove', (e) => {
+        const rect = heroSection.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 a 0.5
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+        const moveX = x * 30;
+        const moveY = y * 30;
+
+        heroContent.style.transform = `translate(${moveX}px, ${moveY}px)`;
+      });
+
+      heroSection.addEventListener('mouseleave', () => {
+        heroContent.style.transform = 'translate(0, 0)';
+      });
+    }
+
+    // ---------- CONTADOR ANIMADO (GOLS) ----------
+    const goalsNumber = document.getElementById('goalsNumber');
+    const finalGoals = 452; // Total aproximado de gols na carreira
+    let goalsAnimated = false;
+
+    const goalsObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !goalsAnimated) {
+            goalsAnimated = true;
+            animateValue(goalsNumber, 0, finalGoals, 2000);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (goalsNumber) goalsObserver.observe(goalsNumber);
+
+    // ---------- CONTADORES DE DRIBLES ----------
+    const dribbleNumbers = document.querySelectorAll('.dribble-stat-number[data-count]');
+    const dribbleAnimated = new Set();
+
+    const dribbleObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !dribbleAnimated.has(entry.target)) {
+            dribbleAnimated.add(entry.target);
+            const target = parseInt(entry.target.getAttribute('data-count'), 10);
+            animateValue(entry.target, 0, target, 1800);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    dribbleNumbers.forEach((el) => dribbleObserver.observe(el));
+
+    // Função genérica de animação de valores
+    function animateValue(element, start, end, duration) {
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Easing easeOutCubic
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const currentValue = Math.floor(start + (end - start) * easeOut);
+
+        element.textContent = currentValue.toLocaleString('pt-BR');
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          element.textContent = end.toLocaleString('pt-BR');
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    // ---------- SMOOTH SCROLL PARA LINKS INTERNOS ----------
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          const offsetTop = targetElement.offsetTop - 80;
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth',
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
